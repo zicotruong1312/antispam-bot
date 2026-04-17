@@ -7,7 +7,7 @@ const express = require('express');
 const app = express();
 app.get('/', (req, res) => res.send('AntiSpam Bot is running safely!'));
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`[Web Server] Đang giữ nhịp trên cổng ${port}`));
+app.listen(port, '0.0.0.0', () => console.log(`[Web Server] Đang giữ nhịp trên cổng ${port}`));
 
 const client = new Client({
     intents: [
@@ -47,7 +47,7 @@ client.on('messageCreate', async (message) => {
     // --- 0. BẢO VỆ TUYỆT ĐỐI (GẶP MÃ ĐỘC LÀ CHÉM) ---
     if (linkStatus.isMalicious) {
         try {
-            await message.delete().catch(() => {}); // Cố gắng xoá tin nhắn đó ngay tức thì (nếu chưa bị clear)
+            await message.delete().catch(() => { }); // Cố gắng xoá tin nhắn đó ngay tức thì (nếu chưa bị clear)
             await message.guild.members.ban(userId, {
                 deleteMessageSeconds: 604800, // Xoá sạch tin nhắn
                 reason: `[Auto-Ban Security] Gửi link lừa đảo/mã độc giả mạo (${linkStatus.domain || 'N/A'})`
@@ -93,7 +93,7 @@ client.on('messageCreate', async (message) => {
                 reason: `[Auto-Ban] Lỗi Spam: Gửi tin nhắn qua ${uniqueChannels} kênh khác nhau trong vòng 10 giây.`
             });
             console.log(`[BANNED] Đã ban và xoá sạch tin nhắn của ${message.author.tag} (${userId}) vì spam đa kênh.`);
-            
+
             // Xoá dữ liệu từ bộ nhớ đệm
             messageCache.delete(userId);
             suspiciousUsers.delete(userId);
@@ -125,7 +125,7 @@ client.on('guildMemberRemove', async (member) => {
                 console.error(`[Lỗi] Không thể truy ban user ${userId}:`, error.message);
             }
         }
-        
+
         // Xoá dữ liệu ID khỏi cache
         suspiciousUsers.delete(userId);
     }
