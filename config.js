@@ -32,22 +32,17 @@ module.exports = {
     HIT_AND_RUN_WINDOW: 5 * 60 * 1000,  // Thoát trong 5 phút sau khi ném link => Truy ban
 
     // ==========================================================
-    // MODULE 3: ANTI-RAID & BOTNET (events/guildMemberAdd.js)
+    // MODULE 3: ANTI-RAID (events/guildMemberAdd.js)
     // ==========================================================
 
     /**
-     * CHỐNG TÀI KHOẢN CLONE (Alt/Botnet) - Kick acc mới tạo.
-     * Ngưỡng: 3 ngày (72h) => chặn gần như toàn bộ botnet.
-     * Bot sẽ DM lịch sự giải thích trước khi kick.
-     */
-    MIN_ACCOUNT_AGE: 3 * 24 * 60 * 60 * 1000, // Tuổi tài khoản tối thiểu: 3 ngày
-
-    /**
-     * MASS JOIN (RAID) - Phát hiện botnet tràn vào.
-     * Bot chỉ gửi cảnh báo DM cho Owner chứ không tự Lockdown để tránh ảnh hưởng user thật.
+     * PHÁT HIỆN RAID (MASS JOIN) - Kick toàn bộ đợt join bất thường.
+     * Logic: Bất kỳ ai join bình thường đều được vào tự do, không giới hạn tuổi acc.
+     * Chỉ khi >= MASS_JOIN_THRESHOLD người join trong MASS_JOIN_TIMEFRAME giây
+     * thì coi đó là Raid => Kick toàn bộ những người vừa vào trong đợt đó.
      */
     MASS_JOIN_TIMEFRAME: 10 * 1000,     // Cửa sổ theo dõi: 10 giây
-    MASS_JOIN_THRESHOLD: 10,            // Cảnh báo nếu >= 10 người join trong 10s
+    MASS_JOIN_THRESHOLD: 10,            // Kick hàng loạt nếu >= 10 người join trong 10s
 
     // ==========================================================
     // MODULE 4: ANTI-NUKE (events/guildAuditLogEntryCreate.js)
